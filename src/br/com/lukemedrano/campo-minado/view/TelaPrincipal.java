@@ -15,7 +15,6 @@ public class TelaPrincipal extends JFrame {
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, painelTabuleiro, painelPontos);
         splitPane.setDividerLocation(925);
-
         add(splitPane);
 
         setTitle("Campo Minado");
@@ -23,6 +22,7 @@ public class TelaPrincipal extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
+        setResizable(false);
     }
 
     public static void main(String[] args) {
