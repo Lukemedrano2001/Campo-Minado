@@ -35,4 +35,8 @@ Este é um projeto simples de Campo Minado em Java.
 
    - **Execução do Projeto no Eclipse**:
       - Clique duas vezes na classe principal que contém o método main (`TelaPrincipal`).
+<<<<<<< HEAD
       - Após ter aberto, você pode apertar o botão verde de "Run" e com isso o jogo e a interface gráfica podem ser executados.
+=======
+      - Após ter aberto, você pode apertar o botão verde de "Run" e com isso o jogo e a interface gráfica podem ser executados.
+>>>>>>> 2fb087238ed3db3a0fcefe6faedb7c81ea30e3cd
