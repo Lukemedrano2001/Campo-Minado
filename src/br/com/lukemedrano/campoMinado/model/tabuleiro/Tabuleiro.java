@@ -113,10 +113,6 @@ public class Tabuleiro implements ObserverCampo, ObserverPontos {
 		return this.getCampos().stream().allMatch(campo -> campo.objetivoAlcancado());
 	}
 	
-	public boolean objetivoNaoAlcancado() {
-		return !this.objetivoAlcancado();
-	}
-	
 	public void reiniciaJogo() {
 		this.getCampos().stream().forEach(campo -> campo.reiniciar());
 		this.sorteioMinas();
