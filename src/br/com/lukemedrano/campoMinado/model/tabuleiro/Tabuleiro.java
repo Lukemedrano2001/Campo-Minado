@@ -63,26 +63,54 @@ public class Tabuleiro implements ObserverCampo, ObserverPontos {
 		return this.totalJogos;
 	}
 	
+	public List<Campo> getCampos(){
+		return this.campos;
+	}
+	
+	public List<Consumer<EventoResultadoTabuleiro>> getObserversTabuleiro(){
+		return this.observersTabuleiro;
+	}
+	
+	public List<Consumer<EventoResultadoPontos>> getObserversPontos(){
+		return this.observersPontos;
+	}
+	
+	public double getPorcentagemVitorias() {
+        if (this.getTotalJogos() == 0) {
+            return 0.0;
+        }
+
+        return ((double) this.getVitorias() / this.getTotalJogos()) * 100.0;
+    }
+
+    public double getPorcentagemDerrotas() {
+        if (this.getTotalJogos() == 0) {
+            return 0.0;
+        }
+
+        return ((double) this.getDerrotas() / this.getTotalJogos()) * 100.0;
+    }
+	
 	public void forEachCampo(Consumer<Campo> funcao) {
-		this.campos.forEach(funcao);
+		this.getCampos().forEach(funcao);
 	}
 	
 	public void abrir(int linha, int coluna) {
-		this.campos.parallelStream()
+		this.getCampos().parallelStream()
 			.filter(campo -> campo.getLinha() == linha && campo.getColuna() == coluna)
 			.findFirst()
 			.ifPresent(campo -> campo.abrir());
 	}
 	
 	public void alternaMarcacao(int linha, int coluna) {
-		this.campos.parallelStream()
+		this.getCampos().parallelStream()
 			.filter(campo -> campo.getLinha() == linha && campo.getColuna() == coluna)
 			.findFirst()
 			.ifPresent(campo -> campo.alternaMarcacao());
 	}
 	
 	public boolean objetivoAlcancado() {
-		return this.campos.stream().allMatch(campo -> campo.objetivoAlcancado());
+		return this.getCampos().stream().allMatch(campo -> campo.objetivoAlcancado());
 	}
 	
 	public boolean objetivoNaoAlcancado() {
@@ -90,45 +118,17 @@ public class Tabuleiro implements ObserverCampo, ObserverPontos {
 	}
 	
 	public void reiniciaJogo() {
-		this.campos.stream().forEach(campo -> campo.reiniciar());
+		this.getCampos().stream().forEach(campo -> campo.reiniciar());
 		this.sorteioMinas();
 	}
 	
 	public void registraObserverTabuleiro(Consumer<EventoResultadoTabuleiro> observer) {
-		this.observersTabuleiro.add(observer);
+		this.getObserversTabuleiro().add(observer);
 	}
 	
 	public void registraObserverPontos(Consumer<EventoResultadoPontos> observer) {
-        this.observersPontos.add(observer);
+        this.getObserversPontos().add(observer);
     }
-	
-	public double getPorcentagemVitorias() {
-        if (this.totalJogos == 0) {
-            return 0.0;
-        }
-
-        return ((double) this.vitorias / this.totalJogos) * 100.0;
-    }
-
-    public double getPorcentagemDerrotas() {
-        if (this.totalJogos == 0) {
-            return 0.0;
-        }
-
-        return ((double) this.derrotas / this.totalJogos) * 100.0;
-    }
-	
-	@Override
-	public void eventoOcorreu(Campo campo, EventoCampo evento) {
-		if(evento == EventoCampo.EXPLODIR) {
-			this.mostrarMinas();
-			this.setDerrotas();
-			this.notificaObserversTabuleiro(false);
-		}else if(this.objetivoAlcancado()) {
-			this.setVitorias();
-			this.notificaObserversTabuleiro(true);
-		}
-	}
 	
 	@Override
 	public void atualiza(EventoPontos evento) {
@@ -143,63 +143,77 @@ public class Tabuleiro implements ObserverCampo, ObserverPontos {
 				break;
 		}
 	}
+	
+	@Override
+	public void eventoOcorreu(Campo campo, EventoCampo evento) {
+		if(evento == EventoCampo.EXPLODIR) {
+			this.mostrarMinas();
+			this.setDerrotas();
+			this.notificaObserversTabuleiro(false);
+		}else if(this.objetivoAlcancado()) {
+			this.setVitorias();
+			this.notificaObserversTabuleiro(true);
+		}
+	}
 
+
+	// Logo abaixo, os métodos com visibilidade private 
 	
-	// Logo abaixo, os métodos com visibilidade de pacote ou default
-	
-	void geraCampos() {
-		for(int linha = 0; linha < this.linhas; linha++) {
-			for(int coluna = 0; coluna < this.colunas; coluna++) {
+	private void geraCampos() {
+		for(int linha = 0; linha < this.getLinhas(); linha++) {
+			for(int coluna = 0; coluna < this.getColunas(); coluna++) {
 				Campo campo = new Campo(linha, coluna);
 				campo.registraObserverCampo(this);
-				campos.add(campo);
+				this.getCampos().add(campo);
 			}
 		}
 	}
 	
-	void associaVizinho() {
-		for(Campo campo1: this.campos) {
-			for(Campo campo2: this.campos) {
+	private void associaVizinho() {
+		for(Campo campo1: this.getCampos()) {
+			for(Campo campo2: this.getCampos()) {
 				campo1.adicionaVizinho(campo2);
 			}
 		}
 	}
 	
-	void sorteioMinas() {
+	private void sorteioMinas() {
 		long minasArmadas = 0;
 		Predicate<Campo> minado = campo -> campo.isMinado();
 		
-		while(minasArmadas < this.minas) {
-			int aleatorio = (int) (Math.random() * campos.size());
-			this.campos.get(aleatorio).minar();
-			minasArmadas = campos.stream().filter(minado).count();
+		while(minasArmadas < this.getMinas()) {
+			int aleatorio = (int) (Math.random() * this.getCampos().size());
+			this.getCampos().get(aleatorio).minar();
+			minasArmadas = this.getCampos().stream().filter(minado).count();
 		}
 	}
 	
-	void setVitorias() {
+	private void setVitorias() {
 		this.vitorias++;
-		this.totalJogos++;
+		this.setTotalJogos();
 		this.notificaObserversPontos(true);
 	}
 	
-	void setDerrotas() {
+	private void setDerrotas() {
 		this.derrotas++;
-		this.totalJogos++;
+		this.setTotalJogos();
 		this.notificaObserversPontos(false);
 	}
 	
-	// Logo abaixo, os métodos com visibilidade private 
-	
-	private void notificaObserversTabuleiro(boolean resultado) {
-		this.observersTabuleiro.stream().forEach(observer -> observer.accept(new EventoResultadoTabuleiro(resultado)));
+	private void setTotalJogos() {
+		this.totalJogos++;
 	}
 	
 	private void notificaObserversPontos(boolean resultado) {
-	    this.observersPontos.stream().forEach(observer -> observer.accept(new EventoResultadoPontos(resultado)));
+	    this.getObserversPontos().stream().forEach(observer -> observer.accept(new EventoResultadoPontos(resultado)));
+	}
+	
+	private void notificaObserversTabuleiro(boolean resultado) {
+		this.getObserversTabuleiro().stream().forEach(observer -> observer.accept(new EventoResultadoTabuleiro(resultado)));
 	}
 	
 	private void mostrarMinas() {
-		this.campos.stream()
+		this.getCampos().stream()
 			.filter(campo -> campo.isMinado())
 			.filter(campo -> campo.isNaoMarcado())
 			.forEach(campo -> campo.setAberto(true));

@@ -37,6 +37,10 @@ public class BotaoCampo extends JButton implements ObserverCampo, MouseListener 
 		addMouseListener(this);
 		campo.registraObserverCampo(this);
 	}
+	
+	public Campo getCampo() {
+		return this.campo;
+	}
 
 	@Override
 	public void eventoOcorreu(Campo campo, EventoCampo evento) {
@@ -88,19 +92,19 @@ public class BotaoCampo extends JButton implements ObserverCampo, MouseListener 
 				setForeground(TEXTO_ROSA);
 		}
 		
-		String valor = !this.campo.vizinhacaSegura() ? this.campo.minasNaVizinhaca() + "" : "";
+		String valor = this.getCampo().vizinhacaPerigosa() ? this.getCampo().minasNaVizinhaca() + "" : "";
 		setText(valor);
 	}
 	
 	private void aplicaEstiloMarcar() {
 		setBackground(BG_MARCADO);
-		setForeground(Color.BLACK);
+		setForeground(new Color(0, 0, 0));
 		setText("M");
 	}
 
 	private void aplicaEstiloExplodir() {
 		setBackground(BG_EXPLODIR);
-		setForeground(Color.WHITE);
+		setForeground(new Color(255, 255, 255));
 		setText("X");
 	}
 	
@@ -113,9 +117,9 @@ public class BotaoCampo extends JButton implements ObserverCampo, MouseListener 
 	@Override
 	public void mousePressed(MouseEvent evento) {
 		if(evento.getButton() == 1) {
-			campo.abrir();
+			this.getCampo().abrir();
 		}else if(evento.getButton() == 3) {
-			campo.alternaMarcacao();
+			this.getCampo().alternaMarcacao();
 		}
 	}
 

@@ -1,11 +1,9 @@
 package br.com.lukemedrano.campoMinado.view;
 
 import java.awt.GridLayout;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
 import br.com.lukemedrano.campoMinado.model.tabuleiro.Tabuleiro;
 
 @SuppressWarnings("serial")
