@@ -6,8 +6,4 @@ public class EventoResultadoPontos {
 	public EventoResultadoPontos(boolean resultado){
 		this.resultado = resultado;
 	}
-	
-	public boolean vitoriaOuDerrota() {
-		return this.resultado;
-	}
 }
