@@ -12,10 +12,10 @@ public class Campo {
 	private boolean minado = false;
 	private boolean marcado = false;
 	
-	private List<Campo> vizinhos = new ArrayList<Campo>();
+	private List<Campo> vizinhos = new ArrayList<>();
 	// Poderia usar o BiConsumer, e este recebe 2 parametros e retorna void ao invés de usar o ObserverCampo
 	// Poderia usar o Set, pois não tem ordem e evita duplicação de observer
-	private List<ObserverCampo> observersCampo = new ArrayList<ObserverCampo>();	
+	private List<ObserverCampo> observersCampo = new ArrayList<>();	
 	
 	public Campo(int linha, int coluna){
 		this.linha = linha;
