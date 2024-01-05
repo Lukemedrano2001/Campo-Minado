@@ -9,7 +9,6 @@ import br.com.lukemedrano.campoMinado.model.tabuleiro.Tabuleiro;
 
 @SuppressWarnings("serial")
 public class PainelPontos extends JPanel {
-    @SuppressWarnings("unused")
     private final Tabuleiro tabuleiro;
     private final JTextArea textArea;
 
@@ -17,25 +16,13 @@ public class PainelPontos extends JPanel {
         this.tabuleiro = tabuleiro;
         this.textArea = new JTextArea();
 
-        configurarJTextArea(textArea);
+        this.configurarJTextArea(textArea);
 
-        tabuleiro.registraObserverPontos(evento -> {
-            int vitorias = tabuleiro.getVitorias();
-            int derrotas = tabuleiro.getDerrotas();
-            int jogos = tabuleiro.getTotalJogos();
-            double porcentagemVitorias = tabuleiro.getPorcentagemVitorias();
-            double porcentagemDerrotas = tabuleiro.getPorcentagemDerrotas();
-            
-            atualizarTexto(vitorias, derrotas, porcentagemVitorias, porcentagemDerrotas, jogos);
-        });
+        // Inicialmente mostra o tabuleiro
+        this.exibeTextoInicial();
         
-        int vitorias = tabuleiro.getVitorias();
-        int derrotas = tabuleiro.getDerrotas();
-        int jogos = tabuleiro.getTotalJogos();
-        double porcentagemVitorias = tabuleiro.getPorcentagemVitorias();
-        double porcentagemDerrotas = tabuleiro.getPorcentagemDerrotas();
-
-        atualizarTexto(vitorias, derrotas, porcentagemVitorias, porcentagemDerrotas, jogos);
+        // Atualiza o tabuleiro a cada partida
+        tabuleiro.registraObserverPontos(evento -> this.atualizarTextoComEventos());
     }
 
     private void configurarJTextArea(JTextArea textArea) {
@@ -50,15 +37,29 @@ public class PainelPontos extends JPanel {
         add(textArea);
     }
 
-    private void atualizarTexto(int vitorias, int derrotas, double porcentagemVitorias, double porcentagemDerrotas, int jogos) {
-    	StringBuilder builder = new StringBuilder();
+    private void atualizarTextoComEventos() {
+        this.atualizarTexto();
+    }
+
+    private void exibeTextoInicial() {
+        this.atualizarTexto();
+    }
+    
+    private void atualizarTexto() {
+        StringBuilder builder = new StringBuilder();
         
-    	builder.append("Vitórias: " + vitorias)
-    		.append(String.format("  Porcentagem: %.2f%%", porcentagemVitorias)).append("\n\n");
+        int vitorias = tabuleiro.getVitorias();
+        int derrotas = tabuleiro.getDerrotas();
+        int jogos = tabuleiro.getTotalJogos();
+        double porcentagemVitorias = tabuleiro.getPorcentagemVitorias();
+        double porcentagemDerrotas = tabuleiro.getPorcentagemDerrotas();
+
+        builder.append("Vitórias: " + vitorias)
+                .append(String.format("  Porcentagem: %.2f%%", porcentagemVitorias)).append("\n\n");
         builder.append("Derrotas: " + derrotas)
-        	.append(String.format("  Porcentagem: %.2f%%", porcentagemDerrotas)).append("\n\n");
+                .append(String.format("  Porcentagem: %.2f%%", porcentagemDerrotas)).append("\n\n");
         builder.append("Jogos: " + jogos);
-        
+
         textArea.setText(builder.toString());
     }
 }
