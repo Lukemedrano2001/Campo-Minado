@@ -30,7 +30,7 @@ public class PainelPontos extends JPanel {
         textArea.setWrapStyleWord(true);
         textArea.setFont(new Font("Arial", Font.PLAIN, 14));
         textArea.setBackground(new Color(240, 240, 240));
-        textArea.setForeground(Color.BLACK);
+        textArea.setForeground(new Color(0, 0, 0));
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -48,7 +48,6 @@ public class PainelPontos extends JPanel {
     private void atualizarTexto() {
         StringBuilder builder = new StringBuilder();
         
-<<<<<<< HEAD
         int vitorias = tabuleiro.getVitorias();
         int derrotas = tabuleiro.getDerrotas();
         int jogos = tabuleiro.getTotalJogos();
@@ -59,12 +58,7 @@ public class PainelPontos extends JPanel {
                 .append(String.format("  Porcentagem: %.2f%%", porcentagemVitorias)).append("\n\n");
         builder.append("Derrotas: " + derrotas)
                 .append(String.format("  Porcentagem: %.2f%%", porcentagemDerrotas)).append("\n\n");
-=======
-    	builder.append("Vitórias: " + vitorias)
-    		.append(String.format("  Porcentagem: %.2f%%", porcentagemVitorias)).append("\n\n");
-        builder.append("Derrotas: " + derrotas)
-        	.append(String.format("  Porcentagem: %.2f%%", porcentagemDerrotas)).append("\n\n");
->>>>>>> 2fb087238ed3db3a0fcefe6faedb7c81ea30e3cd
+
         builder.append("Jogos: " + jogos);
 
         textArea.setText(builder.toString());
