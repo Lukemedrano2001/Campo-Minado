@@ -54,9 +54,9 @@ public class PainelPontos extends JPanel {
     	StringBuilder builder = new StringBuilder();
         
     	builder.append("Vitórias: " + vitorias)
-    		.append(String.format("  Porcentagem: %.2f%%", porcentagemVitorias)).append("\n");
+    		.append(String.format("  Porcentagem: %.2f%%", porcentagemVitorias)).append("\n\n");
         builder.append("Derrotas: " + derrotas)
-        	.append(String.format("  Porcentagem: %.2f%%", porcentagemDerrotas)).append("\n");
+        	.append(String.format("  Porcentagem: %.2f%%", porcentagemDerrotas)).append("\n\n");
         builder.append("Jogos: " + jogos);
         
         textArea.setText(builder.toString());
