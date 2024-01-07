@@ -37,3 +37,5 @@ Este é um projeto simples de Campo Minado em Java.
       - Clique duas vezes na classe principal que contém o método main (`TelaPrincipal`).
       - Após ter aberto, você pode apertar o botão verde de "Run" e com isso o jogo e a interface gráfica podem ser executados.
       - Para jogar, use o botão esquerdo do mouse para abrir um campo, e para marcar e desmarcar um campo, use o botão direito do mouse.
+
+      [!CampoMinado][campo-minado.png]
