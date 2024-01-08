@@ -83,13 +83,13 @@ public class Tabuleiro implements ObserverCampo, ObserverPontos {
         return ((double) this.getVitorias() / this.getTotalJogos()) * 100.0;
     }
 
-    public double getPorcentagemDerrotas() {
-        if (this.getTotalJogos() == 0) {
-            return 0.0;
-        }
+    	public double getPorcentagemDerrotas() {
+	        if (this.getTotalJogos() == 0) {
+	            return 0.0;
+        	}
 
-        return ((double) this.getDerrotas() / this.getTotalJogos()) * 100.0;
-    }
+        	return ((double) this.getDerrotas() / this.getTotalJogos()) * 100.0;
+    	}
 	
 	public void forEachCampo(Consumer<Campo> funcao) {
 		this.getCampos().forEach(funcao);
@@ -201,7 +201,7 @@ public class Tabuleiro implements ObserverCampo, ObserverPontos {
 	}
 	
 	private void notificaObserversPontos(boolean resultado) {
-	    this.getObserversPontos().stream().forEach(observer -> observer.accept(new EventoResultadoPontos(resultado)));
+	    	this.getObserversPontos().stream().forEach(observer -> observer.accept(new EventoResultadoPontos(resultado)));
 	}
 	
 	private void notificaObserversTabuleiro(boolean resultado) {
